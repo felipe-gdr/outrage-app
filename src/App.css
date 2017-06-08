@@ -30,3 +30,15 @@
 img.status {
   width: 400px;
 }
+
+.content {
+  margin: 50px;
+}
+
+.content>div>div,.content>div {
+  margin-top: 50px;
+}
+
+.rc-progress-line {
+  width: 50%;
+}

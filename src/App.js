@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import PubNub from 'pubnub';
+import moment from 'moment';
+
+import { Line } from 'rc-progress';
 
 import './App.css';
 
@@ -7,11 +10,14 @@ import logo from './images/banana.png';
 import quietImage from './images/quiet.png';
 import busyImage from './images/busy.png';
 
+
+const CHANNEL = 'hello_world';
+
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      count: 0,
+      count: 3,
       status: 'unknown'
     }
   }
@@ -39,11 +45,27 @@ class App extends Component {
                          'unknown';
 
           self.setState({ status });
+
+          if(status === 'up') {
+            pubnub.history(
+                {
+                    channel: CHANNEL,
+                    reverse: false, // Setting to true will traverse the time line in reverse starting with the oldest message first.
+                    count: 1, // how many items to fetch
+                    stringifiedTimeToken: true, // false is the default
+                    start: '0', // start time token to fetch
+                    end: moment().add(1, 'minutes').unix() * 10000000
+                },
+                function (status, response) {
+                  // self.setState({count: JSON.parse(response.messages[0].entry).body.count});
+                }
+            );
+          }
         }
     })
 
     pubnub.subscribe({
-        channels: ['hello_world']
+        channels: [CHANNEL]
     });
   }
 
@@ -54,7 +76,7 @@ class App extends Component {
       <div className="App">
         <div className={`App-header ${status}`}>
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>Banana Outrage - {status}</h2>
+          <h2>Banana Outrage</h2>
         </div>
         <p className="App-intro">
 
@@ -63,11 +85,34 @@ class App extends Component {
         {
           status === 'up' &&
 
-          <div className='text'>
+          <div className='content'>
+            {count == 0 &&
+              <div className='quiet'>
+                <div>
+                  <Line percent={`90`} strokeWidth="4" strokeColor="#2222DD" />
+                </div>
+                <div>
+                  <img className='status' src={quietImage} />
+                </div>
+              </div>
+            }
+            {count > 0 && count < 3 &&
+              <div className='few'>
+                <Line percent={`90`} strokeWidth="4" strokeColor="#DD2222" />
+                {'a few messages'}
+              </div>
+            }
+            {count >= 3 &&
+              <div className='busy'>
+                <div>
+                  <Line percent={`90`} strokeWidth="4" strokeColor="#DD2222" />
+                </div>
+                <div>
+                  <img className='status' src={busyImage} />
+                </div>
+              </div>
+            }
             <div>Message count: {count}</div>
-            {count == 0 && <div className='quiet'><img className='status' src={quietImage} /></div>}
-            {count > 0 && count < 3 && <div className='few'>{'a few messages'}</div>}
-            {count >= 3 && <div className='busy'><img className='status' src={busyImage} /></div>}
           </div>
         }
       </div>
