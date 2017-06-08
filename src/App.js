@@ -1,13 +1,13 @@
-require('normalize.css/normalize.css');
-require('styles/App.css');
-
+import React, { Component } from 'react';
 import PubNub from 'pubnub';
-import React from 'react';
 
-const quietImage = require('../images/quiet.png');
-const busyImage = require('../images/busy.png');
+import logo from './logo.svg';
+import './App.css';
 
-class AppComponent extends React.Component {
+import quietImage from './images/quiet.png';
+import busyImage from './images/busy.png';
+
+class App extends Component {
   constructor() {
     super();
     this.state = {
@@ -51,26 +51,28 @@ class AppComponent extends React.Component {
     const { count, status } = this.state;
 
     return (
-      <div className='index'>
-        <div className={`notice ${status}`}>Banana Outrage - {status}</div>
+      <div className="App">
+        <div className={`App-header ${status}`}>
+          <img src={logo} className="App-logo" alt="logo" />
+          <h2>Banana Outrage - {status}</h2>
+        </div>
+        <p className="App-intro">
+
+        </p>
 
         {
           status === 'up' &&
 
           <div className='text'>
             <div>Message count: {count}</div>
-            {count == 0 && <div className='quiet'><img className='status' src={quietImage} />{'too quiet'}</div>}
+            {count == 0 && <div className='quiet'><img className='status' src={quietImage} /></div>}
             {count > 0 && count < 3 && <div className='few'>{'a few messages'}</div>}
-            {count >= 3 && <div className='busy'><img className='status' src={busyImage} />{'busy'}</div>}
+            {count >= 3 && <div className='busy'><img className='status' src={busyImage} /></div>}
           </div>
         }
-
       </div>
     );
   }
 }
 
-AppComponent.defaultProps = {
-};
-
-export default AppComponent;
+export default App;
