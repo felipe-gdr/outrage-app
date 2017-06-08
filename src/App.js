@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PubNub from 'pubnub';
 
-import logo from './logo.svg';
 import './App.css';
 
+import logo from './images/banana.png';
 import quietImage from './images/quiet.png';
 import busyImage from './images/busy.png';
 
