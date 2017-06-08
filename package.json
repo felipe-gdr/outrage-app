@@ -62,7 +62,8 @@
   },
   "dependencies": {
     "core-js": "^2.0.0",
-    "mqtt": "^2.8.2",
+    "dotenv": "^4.0.0",
+    "moment": "^2.18.1",
     "normalize.css": "^4.0.0",
     "pubnub": "^4.10.0",
     "react": "^15.0.0",
