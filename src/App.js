@@ -8,6 +8,7 @@ import './App.css';
 
 import logo from './images/banana.png';
 import quietImage from './images/quiet.png';
+import fewImage from './images/few.png';
 import busyImage from './images/busy.png';
 
 
@@ -72,6 +73,8 @@ class App extends Component {
   render() {
     const { count, status } = this.state;
 
+    const percent = (count / 10) * 100;
+
     return (
       <div className="App">
         <div className={`App-header ${status}`}>
@@ -86,33 +89,35 @@ class App extends Component {
           status === 'up' &&
 
           <div className='content'>
-            {count == 0 &&
+            {count < 2 &&
               <div className='quiet'>
                 <div>
-                  <Line percent={`90`} strokeWidth="4" strokeColor="#2222DD" />
+                  <Line percent={`${percent}`} strokeWidth="4" strokeColor="#FFA500" />
                 </div>
                 <div>
                   <img className='status' src={quietImage} />
                 </div>
               </div>
             }
-            {count > 0 && count < 3 &&
+            {count > 2 && count < 9 &&
               <div className='few'>
-                <Line percent={`90`} strokeWidth="4" strokeColor="#DD2222" />
-                {'a few messages'}
+                <Line percent={`${percent}`} strokeWidth="4" strokeColor="#FFA500" />
+                <div>
+                  <img className='status' src={fewImage} />
+                </div>
               </div>
             }
-            {count >= 3 &&
+            {count >= 9 &&
               <div className='busy'>
                 <div>
-                  <Line percent={`90`} strokeWidth="4" strokeColor="#DD2222" />
+                  <Line percent={`${percent}`} strokeWidth="4" strokeColor="#FFA500" />
                 </div>
                 <div>
                   <img className='status' src={busyImage} />
                 </div>
               </div>
             }
-            <div>Message count: {count}</div>
+            {/* <div>Message count: {count}</div> */}
           </div>
         }
       </div>
